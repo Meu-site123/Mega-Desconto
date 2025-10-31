@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrar na Conta - Acesso Seguro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="elementos.css">
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Cabeçalho Simples -->
+    <header class="bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <a href="#" class="text-2xl font-bold text-gray-900">
+                <span style="color: var(--color-primary);">Mega Descontos</span> | Login
+            </a>
+        </div>
+    </header>
+
+    <!-- Área Principal: Cartão de Login Centrado -->
+    <main class="flex-grow flex items-center justify-center p-4">
+        <div class="w-full max-w-md">
+            <div class="bg-white p-8 sm:p-10 rounded-xl shadow-2xl border border-gray-100 login-card-animation">
+                
+                <!-- Título -->
+                <div class="text-center mb-8">
+                    <h1 class="text-3xl font-extrabold text-gray-900 mb-2">Bem-vindo de Volta</h1>
+                    <p class="text-gray-500">Inicie sessão para aceder à sua conta.</p>
+                </div>
+                
+                <!-- Mensagem de Feedback -->
+                <div id="feedback-message" class="p-4 rounded-lg mb-6 hidden show" role="alert">
+                    <p id="feedback-text" class="font-medium"></p>
+                </div>
+
+                <!-- Formulário de Login -->
+                <form id="login-form" onsubmit="handleLogin(event)" class="space-y-6">
+                    <!-- Email -->
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input type="email" id="email" required class="login-input" placeholder="o.seu.email@exemplo.com">
+                    </div>
+
+                    <!-- Palavra-Passe -->
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Palavra-Passe</label>
+                        <input type="password" id="password" required class="login-input" placeholder="palavra-passe">
+                    </div>
+
+                    <!-- Ações -->
+                    <div class="flex justify-end">
+                        <a href="https://support.google.com/accounts/answer/7682439?hl=pt-br" class="text-sm font-medium text-blue-600 hover:text-blue-800 transition duration-150">Esqueceu a Palavra-Passe?</a>
+                    </div>
+
+                    <!-- Botão de Enviar -->
+                    <div>
+                        <button type="submit" id="login-button" class="submit-button w-full text-white font-semibold py-3 rounded-lg shadow-lg uppercase tracking-wider">
+                            Iniciar Sessão
+                        </button>
+                        <br><br>
+                         <button type="submit" class="submit-button w-full text-white font-semibold py-3 rounded-lg shadow-lg uppercase tracking-wider">  
+                              <a href="index.html">
+                                Ir para a Página Inicial
+                          </a>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Links de Rodapé -->
+                <div class="mt-8 text-center text-sm text-gray-600">
+                    Não tem uma conta? 
+                    <a href="sub.html" class="font-medium text-blue-600 hover:text-blue-800 transition duration-150">Crie uma conta</a>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="bg-gray-800 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-center text-sm">
+            &copy; 2025 Sua Empresa. Segurança em primeiro lugar.
+        </div>
+    </footer>
+
+    <!-- JavaScript para Lógica de Login (Mock) -->
+    <script>
+        // --- Variáveis Globais Firestore (Obrigatórias) ---
+        // Estas variáveis são essenciais no ambiente Canvas, mesmo que a autenticação
+        // real esteja mockada.
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+        
+        // Simulação de objetos Firebase para evitar erros de referência
+        const db = { collection: () => ({ doc: () => ({}) }) };
+        const auth = { currentUser: { uid: 'mockUserId' } };
+        // Fim das variáveis Firestore
+
+        const form = document.getElementById('login-form');
+        const feedbackDiv = document.getElementById('feedback-message');
+        const feedbackText = document.getElementById('feedback-text');
+        const loginButton = document.getElementById('login-button');
+        
+        // Credenciais de teste
+        const VALID_EMAIL = "teste@empresa.pt";
+        const VALID_PASSWORD = "password123";
+
+        /**
+         * Exibe uma mensagem de feedback ao utilizador.
+         * @param {string} message - O texto da mensagem.
+         * @param {boolean} isSuccess - Verdadeiro para sucesso, Falso para erro.
+         */
+        function showFeedback(message, isSuccess) {
+            // Limpa classes anteriores
+            feedbackDiv.className = 'p-4 rounded-lg mb-6 show';
+            feedbackDiv.classList.remove('hidden');
+
+            if (isSuccess) {
+                feedbackDiv.classList.add('bg-green-100', 'text-green-700');
+                feedbackText.textContent = `✅ ${message}`;
+            } else {
+                feedbackDiv.classList.add('bg-red-100', 'text-red-700');
+                feedbackText.textContent = `❌ ${message}`;
+            }
+
+            // Esconder a mensagem após 5 segundos
+            setTimeout(() => {
+                feedbackDiv.classList.add('hidden');
+                feedbackDiv.classList.remove('show');
+            }, 5000);
+        }
+
+        /**
+         * Lida com o envio do formulário de Login.
+         */
+        function handleLogin(event) {
+            event.preventDefault(); // Impede o envio real do formulário
+            
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
+            
+            // Desativa o botão e mostra estado de carregamento
+            loginButton.disabled = true;
+            loginButton.textContent = "A iniciar sessão...";
+            loginButton.classList.add('opacity-70');
+
+            // Simulação de delay de rede
+            setTimeout(() => {
+                loginButton.disabled = false;
+                loginButton.textContent = "Iniciar Sessão";
+                loginButton.classList.remove('opacity-70');
+
+                if (email === VALID_EMAIL && password === VALID_PASSWORD) {
+                    
+                    // Simula Sucesso no Login
+                    showFeedback(`Login bem-sucedido! Bem-vindo, ${email}.`, true);
+                    console.log("Login bem-sucedido.");
+
+                } else if (!email || !password) {
+                    showFeedback("Por favor, preencha o email e a palavra-passe.", false);
+                } else {
+                    // Simula Falha no Login
+                    showFeedback("Credenciais inválidas. Verifique o email e a palavra-passe.", false);
+                    console.error("Tentativa de login falhada.");
+                }
+
+            }, 1200); // Simula 1.2 segundos de tempo de resposta do servidor
+        }
+
+        // Garante que a mensagem de feedback não é visível ao carregar
+        document.addEventListener('DOMContentLoaded', () => {
+             feedbackDiv.classList.add('hidden');
+        });
+
+        // Log para fins de debug da configuração
+        console.log(`App ID: ${appId}`);
+    </script>
+</body>
+</html>

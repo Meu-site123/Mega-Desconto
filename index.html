@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promoções Imperdíveis - O Seu Guia de Descontos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="elementos.css">
+   <link rel="shortcut icon" href="imagens/download.jpeg" type="image/x-icon">
+</head>
+<body class="min-h-screen">
+
+    <!-- Cabeçalho -->
+    <header class="bg-white shadow-xl sticky top-0 z-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row justify-between items-center">
+            <a href="#" class="text-3xl font-extrabold text-gray-900 mb-2 sm:mb-0 hover:opacity-80 transition duration-300">
+                ⚡ <span style="color: var(--color-primary);">Mega</span>Descontos
+            </a>
+            <nav class="space-x-4">
+                <a href="#promocoes" class="text-gray-600 hover:text-red-500 font-medium transition duration-150">Início</a>
+                <a href="contacto.html" class="text-gray-600 hover:text-red-500 font-medium transition duration-150">Contactos</a>
+               
+                <a href="sub.html" class="text-white card-button px-4 py-2 rounded-lg font-semibold text-sm shadow-lg">Subscrever</a>
+                            <a href="logar.html" class="text-white card-button px-4 py-2 rounded-lg font-semibold text-sm shadow-lg">Logar</a>
+
+            </nav>
+        </div>
+    </header>
+
+    <!-- Área Principal de Conteúdo -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" id="promocoes">
+        
+        <!-- Destaque / Banner -->
+        <div class="bg-gray-800 text-white p-8 rounded-xl shadow-2xl mb-8 transform hover:scale-[1.005] transition duration-500" style="background-image: linear-gradient(135deg, var(--color-dark) 0%, #374151 100%);">
+            <h1 class="text-4xl sm:text-5xl font-extrabold mb-2">As Melhores Ofertas do Mês!</h1>
+            <p class="text-gray-300 mb-4 text-lg">Descubra descontos incríveis em Eletrónica, Casa, Moda e muito mais. Não perca!</p>
+            <button onclick="document.getElementById('search-input').focus()" class="bg-yellow-400 text-gray-900 font-bold py-3 px-8 rounded-full hover:bg-yellow-300 transition duration-300 shadow-xl">
+                Ver Todas as Ofertas
+            </button>
+        </div>
+
+        <!-- Filtros, Pesquisa e Ordenação -->
+        <div class="bg-white p-6 rounded-xl shadow-lg mb-6 flex flex-col lg:flex-row justify-between items-center space-y-4 lg:space-y-0 lg:space-x-4">
+            
+            <!-- Pesquisa -->
+            <div class="w-full lg:w-1/3">
+                <input type="text" id="search-input" placeholder="Procurar por produto ou marca..." class="w-full p-3 filter-control rounded-lg focus:outline-none">
+            </div>
+            
+            <div class="w-full lg:w-2/3 flex flex-col sm:flex-row justify-end items-center space-y-4 sm:space-y-0 sm:space-x-4">
+                
+                <!-- Filtro por Categoria -->
+                <div class="w-full sm:w-auto flex items-center space-x-2">
+                    <label for="category-filter" class="text-gray-700 font-medium whitespace-nowrap hidden sm:inline">Categoria:</label>
+                    <select id="category-filter" class="w-full sm:w-48 p-3 filter-control rounded-lg bg-white focus:outline-none">
+                        <option value="Todos">Todas as Categorias</option>
+                        <option value="Eletrónica">Eletrónica</option>
+                        <option value="Casa">Casa & Decoração</option>
+                        <option value="Moda">Moda</option>
+                        <option value="Alimentação">Alimentação</option>
+                        <option value="Viagens">Viagens</option>
+                    </select>
+                </div>
+
+                <!-- Ordenação (Nova Funcionalidade!) -->
+                <div class="w-full sm:w-auto flex items-center space-x-2">
+                    <label for="sort-filter" class="text-gray-700 font-medium whitespace-nowrap hidden sm:inline">Ordenar por:</label>
+                    <select id="sort-filter" class="w-full sm:w-48 p-3 filter-control rounded-lg bg-white focus:outline-none">
+                        <option value="discount-desc">Maior Desconto</option>
+                        <option value="price-asc">Preço: Mais Barato</option>
+                        <option value="price-desc">Preço: Mais Caro</option>
+                        <option value="title-asc">Nome (A-Z)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Estatísticas e Título da Secção -->
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-3xl font-bold text-gray-800">Resultados</h2>
+            <span id="stats-display" class="text-sm text-gray-600 font-medium">A carregar...</span>
+        </div>
+
+        <!-- Grelha de Promoções -->
+        <div id="promotions-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 min-h-[300px]">
+            <!-- As promoções serão carregadas aqui pelo JavaScript -->
+            <div id="loading-indicator" class="col-span-full hidden text-center py-16">
+                <div class="loading-spinner"></div>
+                <p class="text-lg text-gray-600 mt-4">A carregar promoções...</p>
+            </div>
+            <p id="no-results" class="hidden text-center text-xl text-gray-500 col-span-full py-12">Nenhuma promoção encontrada com os filtros selecionados.</p>
+        </div>
+
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="bg-gray-900 text-white mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-sm">
+            &copy; 2025 MegaDescontos. Todos os direitos reservados. | <a href="https://www.temu.com/ul/kuiper/un2.html?_p_rfs=1&subj=un-search-web&_p_jump_id=960&_x_vst_scene=adg&search_key=Temu&_x_ads_channel=google&_x_ads_sub_channel=search&_x_ads_account=8822869639&_x_ads_set=20148171588&_x_ads_id=144441827970&_x_ads_creative_id=658943959907&_x_ns_source=g&_x_ns_gclid=Cj0KCQjwmYzIBhC6ARIsAHA3IkSnvHweb1ULgid856jy6OCzEZXUFG9ZOkCMMI7D1nwobjEUvEl5AmMaAtpwEALw_wcB&_x_ns_placement=&_x_ns_match_type=e&_x_ns_ad_position=&_x_ns_product_id=&_x_ns_target=&_x_ns_devicemodel=&_x_ns_wbraid=Ck0KCQjwmYzIBhCTARI8AN-LgN7AXePu8bdA7mA1GncOw8Z4lZ03mbPzrJXF5aCKWJOgy6Y5ycBkMg-78YFW-a35CKnJog9DM-1mGgIBfQ&_x_ns_gbraid=0AAAAAo4mICFCjc3S2G9biQIekkwn4FBRK&_x_ns_keyword=temu&_x_ns_targetid=kwd-4583699489&gad_source=1&gad_campaignid=20148171588&gbraid=0AAAAAo4mICFCjc3S2G9biQIekkwn4FBRK&gclid=Cj0KCQjwmYzIBhC6ARIsAHA3IkSnvHweb1ULgid856jy6OCzEZXUFG9ZOkCMMI7D1nwobjEUvEl5AmMaAtpwEALw_wcB&adg_ctx=f-8704b2d5">Temu.pt.com</a>
+        </div>
+    </footer>
+
+    <!-- JavaScript para Lógica e Carregamento de Dados (MUITO JAVASCRIPT!) -->
+    <script>
+        // Dados de Promoções (Mock Data)
+        const mockPromotions = [
+            { id: 1, title: "Auscultadores com Fios Premium", description: "Qualidade de som incrível e cancelamento de ruído ativo.", category: "Eletrónica", originalPrice: 29.99, discountedPrice: 22.52, discountPercent: 12, imageUrl: "https://img.kwcdn.com/product/fancy/da1baefa-1496-4a0e-8a8a-b510c8686a94.jpg?imageView2/2/w/800/q/70", link: "https://temu.to/k/elcdackqi0x" },
+            { id: 2, title: "Casaco Esportivo Masculino com Zíper Estilo Primavera e Outono", description: "Treine com maximo de estilo.", category: "Casa", originalPrice: 34.89, discountedPrice: 2.15, discountPercent: 97, imageUrl: "https://img.kwcdn.com/product/fancy/7e904545-808b-4f01-aac0-706f2f33f7af.jpg?imageView2/2/w/800/q/70", link: "https://temu.to/k/ec70zf21fqu" },
+            { id: 3, title: "Pack de Viagem Fim-de-SemanJaqueta Masculina com Capuz e Zíper Completo - Duas Cores Preto/Branco, Fechamento Frontal...", description: "Casaco casual e estiloso", category: "Viagens", originalPrice: 67.48, discountedPrice: 14.36, discountPercent:77 , imageUrl: "https://img.kwcdn.com/product/Fancyalgo/VirtualModelMatting/04e2f49c62fbbec75c7e2444e4a4bf4c.jpg?imageView2/2/w/800/q/70", link: "https://temu.to/k/eg0q6v0ttu4" },
+            { id: 4, title: "T-Shirt Desportiva Respirável", description: "Perfeita para treino. Várias cores disponíveis.", category: "Moda", originalPrice: 29.99, discountedPrice: 1.29, discountPercent: 81, imageUrl: "https://img.kwcdn.com/product/Fancyalgo/VirtualModelMatting/e4e64cfa8d6d3c06299714ec4c51cb7d.jpg?imageView2/2/w/800/q/70", link: "https://temu.to/k/euombfbw21j" },
+            { id: 5, title: "Controlador sem fios para telemóvel para iPhone/Android/Steam, para jogos com wireless, joystick extensível para PC.", description: "Perfeito para jogar nas viagens , Pratico e facil de usar", category: "Eletrónica", originalPrice: 22.90, discountedPrice: 4.14, discountPercent: Math.round((22.90 -  4.14) / 22.90 * 100), imageUrl: "https://img.kwcdn.com/product/fancy/2275e2bb-010f-44bc-9331-1a866fbce999.jpg?imageMogr2/crop/482x642%7CimageView2/2/w/800/q/70", link: "https://temu.to/k/e05p9dekjli" },
+            { id: 6, title: "Tablet Android 14 de 10 polegadas, Processador Quad-Core 4GB (2+2) RAM 32GB ROM", description: "Otimos para estudos .", category: "Eletrónica", originalPrice: 139.99, discountedPrice: 45.49, discountPercent: Math.round((139.99 - 45.49) / 139.99 * 100), imageUrl: "https://img.kwcdn.com/product/fancy/34805259-be96-433b-9ace-30eb2b83beeb.jpg?imageMogr2/crop/482x642%7CimageView2/2/w/800/q/70", link: "https://temu.to/k/em425rc1lgm" },
+            { id: 7, title: "Sapatos de malha respirável para homem - Leves e casuais com detalhes vermelhos, sola de b...", description: "Adequados para Execicios fisicos.", category: "Moda", originalPrice: 35.00, discountedPrice: 8.55, discountPercent: Math.round((35.00 - 8.55) / 35.00 * 100), imageUrl: "https://img.kwcdn.com/product/fancy/61e69d29-c147-4fb2-8674-8d430f45f9ee.jpg?imageMogr2/crop/482x642%7CimageView2/2/w/800/q/70", link: "https://temu.to/k/ecrceronr6g" },
+            { id: 8, title: "KZ EDX PRO Fones de Ouvido Intra-auriculares IEM Earbuds HiFi Som Profundo de Bass Fone", description: "Tenha uma otima experiencia ao jogar.", category: "Moda", originalPrice: 16.00, discountedPrice: 1.09, discountPercent: 30, imageUrl: "https://img.kwcdn.com/product/fancy/29d57c18-a6b2-45e4-bfcf-eca36a83cc75.jpg?imageView2/2/w/800/q/70", link: "https://temu.to/k/esvriu4o72c" }
+        ];
+
+        // Referências DOM
+        const searchInput = document.getElementById('search-input');
+        const categoryFilter = document.getElementById('category-filter');
+        const sortFilter = document.getElementById('sort-filter'); // Nova referência
+        const grid = document.getElementById('promotions-grid');
+        const noResults = document.getElementById('no-results');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const statsDisplay = document.getElementById('stats-display');
+
+        // --- Funções Utilitárias ---
+
+        // Formatação de preço
+        const formatPrice = (price) => {
+            return price.toLocaleString('pt-PT', { style: 'currency', currency: 'EUR' });
+        };
+        
+        // Debounce para otimizar a pesquisa
+        const debounce = (func, delay) => {
+            let timeoutId;
+            return function(...args) {
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(() => {
+                    func.apply(this, args);
+                }, delay);
+            };
+        };
+
+        // --- Funções Principais de Lógica ---
+
+        /**
+         * Simula o carregamento assíncrono dos dados (como se viessem de uma API).
+         * @returns {Promise<Array>} Promessa que resolve com o array de promoções.
+         */
+        const fetchPromotions = () => {
+            return new Promise(resolve => {
+                loadingIndicator.classList.remove('hidden');
+                // Simula um atraso de 750ms na rede
+                setTimeout(() => {
+                    loadingIndicator.classList.add('hidden');
+                    resolve(mockPromotions);
+                }, 750);
+            });
+        };
+
+        /**
+         * Cria o elemento HTML do cartão de promoção usando manipulação do DOM.
+         * (Sem alterações significativas em relação à versão anterior)
+         */
+        const createPromotionCard = (promo) => {
+            // 1. Elemento principal do cartão
+            const card = document.createElement('div');
+            card.className = "bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300 overflow-hidden relative transform hover:scale-[1.02]";
+
+            // 2. Badge de Desconto
+            if (promo.discountPercent > 0) {
+                const badge = document.createElement('div');
+                badge.className = "discount-badge";
+                badge.textContent = `-${promo.discountPercent}%`;
+                card.appendChild(badge);
+            }
+
+            // 3. Área da Imagem
+            const imageDiv = document.createElement('div');
+            imageDiv.className = "h-48 w-full bg-cover bg-center";
+            imageDiv.style.backgroundImage = `url('${promo.imageUrl}')`;
+            card.appendChild(imageDiv);
+
+            // 4. Área de Conteúdo
+            const content = document.createElement('div');
+            content.className = "p-5";
+
+            // 5. Categoria
+            const categorySpan = document.createElement('span');
+            categorySpan.className = "text-xs font-semibold uppercase text-red-500 mb-1 block";
+            categorySpan.textContent = promo.category;
+            content.appendChild(categorySpan);
+
+            // 6. Título
+            const titleH3 = document.createElement('h3');
+            titleH3.className = "text-xl font-bold text-gray-800 mb-2 truncate";
+            titleH3.textContent = promo.title;
+            content.appendChild(titleH3);
+
+            // 7. Descrição
+            const descP = document.createElement('p');
+            descP.className = "text-gray-500 text-sm mb-4 line-clamp-2";
+            descP.textContent = promo.description;
+            content.appendChild(descP);
+
+            // 8. Contentor de Preços
+            const priceContainer = document.createElement('div');
+            priceContainer.className = "flex items-end justify-between mb-4";
+
+            const priceDiv = document.createElement('div');
+            
+            // Preço Original
+            const originalPriceP = document.createElement('p');
+            originalPriceP.className = "original-price text-sm";
+            originalPriceP.textContent = formatPrice(promo.originalPrice);
+            priceDiv.appendChild(originalPriceP);
+
+            // Preço com Desconto
+            const discountedPriceP = document.createElement('p');
+            discountedPriceP.className = "text-3xl font-extrabold";
+            discountedPriceP.style.color = "var(--color-primary)";
+            discountedPriceP.textContent = formatPrice(promo.discountedPrice);
+            priceDiv.appendChild(discountedPriceP);
+
+            priceContainer.appendChild(priceDiv);
+            content.appendChild(priceContainer);
+
+            // 9. Botão de Link
+            const linkA = document.createElement('a');
+            linkA.href = promo.link;
+            linkA.target = "_blank";
+            linkA.className = "w-full block text-center card-button text-white font-semibold py-3 rounded-lg shadow-md";
+            linkA.textContent = "Ver Promoção";
+            content.appendChild(linkA);
+
+            card.appendChild(content);
+
+            return card;
+        };
+
+        /**
+         * Aplica filtros e ordenação ao array de promoções.
+         * @param {Array} data - Array de promoções.
+         * @returns {Array} Array filtrado e ordenado.
+         */
+        const applyFiltersAndSorting = (data) => {
+            const searchValue = searchInput.value.toLowerCase();
+            const categoryValue = categoryFilter.value;
+            const sortValue = sortFilter.value;
+
+            // 1. Filtragem
+            let filteredPromotions = data.filter(promo => {
+                const matchesSearch = promo.title.toLowerCase().includes(searchValue) || 
+                                      promo.description.toLowerCase().includes(searchValue);
+                
+                const matchesCategory = categoryValue === 'Todos' || promo.category === categoryValue;
+                
+                return matchesSearch && matchesCategory;
+            });
+
+            // 2. Ordenação (Nova Funcionalidade!)
+            filteredPromotions.sort((a, b) => {
+                switch (sortValue) {
+                    case 'price-asc':
+                        return a.discountedPrice - b.discountedPrice;
+                    case 'price-desc':
+                        return b.discountedPrice - a.discountedPrice;
+                    case 'discount-desc':
+                        return b.discountPercent - a.discountPercent;
+                    case 'title-asc':
+                        return a.title.localeCompare(b.title, 'pt');
+                    default:
+                        return 0; // Manter a ordem
+                }
+            });
+
+            return filteredPromotions;
+        };
+
+        /**
+         * Função principal de renderização, simula assincronicidade.
+         */
+        const renderPromotions = async () => {
+            try {
+                // 1. Simular fetch de dados (com estado de loading)
+                const promotionsData = await fetchPromotions();
+                
+                // 2. Aplicar filtros e ordenação
+                const finalPromotions = applyFiltersAndSorting(promotionsData);
+
+                // 3. Limpar a grelha
+                grid.innerHTML = '';
+                
+                // 4. Renderizar resultados
+                if (finalPromotions.length > 0) {
+                    noResults.classList.add('hidden');
+                    statsDisplay.textContent = `A mostrar ${finalPromotions.length} de ${promotionsData.length} ofertas`;
+                    
+                    finalPromotions.forEach(promo => {
+                        const cardElement = createPromotionCard(promo);
+                        grid.appendChild(cardElement);
+                    });
+                } else {
+                    noResults.classList.remove('hidden');
+                    statsDisplay.textContent = `A mostrar 0 de ${promotionsData.length} ofertas`;
+                }
+
+            } catch (error) {
+                console.error("Erro ao carregar promoções:", error);
+                grid.innerHTML = `<p class="col-span-full text-center text-red-600 py-12">Ocorreu um erro ao carregar as promoções. Tente novamente.</p>`;
+                statsDisplay.textContent = `Erro`;
+            }
+        };
+
+        // --- Configuração e Inicialização ---
+
+        // Iniciar a aplicação e configurar listeners
+        const init = () => {
+            // 1. Aplicar Debounce para o input de pesquisa (300ms de atraso)
+            const debouncedRender = debounce(renderPromotions, 300);
+            searchInput.addEventListener('input', debouncedRender);
+
+            // 2. Listeners para a alteração de Categoria e Ordenação
+            categoryFilter.addEventListener('change', renderPromotions);
+            sortFilter.addEventListener('change', renderPromotions);
+
+            // 3. Renderização inicial ao carregar (inicia o processo de fetch)
+            renderPromotions();
+        };
+
+        // Iniciar o site após o carregamento completo do DOM
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
